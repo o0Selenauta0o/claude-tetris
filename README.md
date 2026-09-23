@@ -46,6 +46,7 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Game Over** con opción de reinicio.
 - **Pantalla de inicio** con botón _Jugar_ y la tabla de records.
 - **Tabla de records local** (guardada en `localStorage`): top 5 puntuaciones con nombre del jugador, líneas y nivel. Al terminar la partida, si la puntuación entra en el top se pide el nombre y la fila se resalta en la tabla. También se guardan el **mejor combo** (piezas consecutivas que limpian líneas) y las **líneas máximas** conseguidas en una partida. Incluye un botón para **borrar los records**.
+- **Skins visuales** seleccionables sin recargar: **Retro** (bloques planos), **Neón** (fondo negro con brillo), **Pastel** (colores suaves y esquinas redondeadas) y **Pixel art** (bloques con textura). La preferencia se guarda en `localStorage`.
 
 ---
 
@@ -182,9 +183,19 @@ Algunos parámetros fáciles de tunear en `game.js`:
 | `COLS`         | Columnas del tablero                     | `10`                  |
 | `ROWS`         | Filas del tablero                        | `20`                  |
 | `BLOCK`        | Tamaño en píxeles de cada celda          | `30`                  |
-| `COLORS`       | Paleta de colores por tipo de pieza      | 7 colores             |
+| `SKINS`        | Skins: nombre, paleta por pieza y dibujo | `retro`, `neon`, `pastel`, `pixel` |
 | `LINE_SCORES`  | Puntos por 1, 2, 3 o 4 líneas eliminadas | `[0,100,300,500,800]` |
 | `dropInterval` | Velocidad inicial de caída en ms         | `1000`                |
+
+### Skins
+
+Cada entrada de `SKINS` en `game.js` tiene:
+
+- `name`: etiqueta que aparece en el selector **SKIN** del panel lateral.
+- `colors`: paleta de 8 posiciones alineada con `PIECES` (índice 0 = `null`, 1–7 = I, O, T, S, Z, J, L).
+- `drawBlock(context, px, py, color, size)`: dibuja un bloque en píxeles; se usa para el tablero, la pieza fantasma y la vista previa.
+
+Para añadir un skin nuevo basta con agregar una entrada a `SKINS`; el selector se rellena automáticamente. El skin elegido se guarda en `localStorage` (clave `tetris.skin`). Los colores de fondo y cuadrícula específicos de un skin se definen en `style.css` con `:root[data-skin="..."]` (así lo hace **Neón** para tener el tablero negro en ambos temas).
 
 > Si cambias `COLS`, `ROWS` o `BLOCK`, recuerda ajustar también `width` y `height` del `<canvas id="board">` en `index.html` para que coincida (`COLS × BLOCK` × `ROWS × BLOCK`).
 
