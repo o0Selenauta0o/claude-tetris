@@ -22,6 +22,8 @@
   --overlay-bg: rgba(10, 10, 20, 0.75);
   --danger: #e57373;
   --menu-panel-bg: rgba(26, 26, 37, 0.9);
+  --highlight-bg: rgba(255, 213, 79, 0.18);
+  --highlight-text: #ffd54f;
 }
 
 :root[data-theme="light"] {
@@ -41,6 +43,8 @@
   --overlay-bg: rgba(240, 240, 248, 0.8);
   --danger: #d64545;
   --menu-panel-bg: rgba(255, 255, 255, 0.9);
+  --highlight-bg: rgba(255, 193, 7, 0.25);
+  --highlight-text: #8a5a00;
 }
 
 body {
@@ -307,4 +311,117 @@ kbd {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-radius: 4px;
+}
+
+/* ---- Records ---- */
+#new-record {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--highlight-text);
+}
+
+.name-form {
+  display: flex;
+  gap: 8px;
+}
+
+#player-name {
+  width: 150px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--kbd-border);
+  background: var(--board-bg);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  user-select: text;
+}
+
+#player-name:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+#save-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#save-btn:hover {
+  background: var(--accent-hover);
+}
+
+.records-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.records-table {
+  border-collapse: collapse;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 13px;
+  min-width: 300px;
+}
+
+.records-table th {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--label);
+  font-weight: 600;
+  padding: 4px 8px;
+  border-bottom: 1px solid var(--board-border);
+}
+
+.records-table td {
+  padding: 4px 8px;
+  color: var(--text);
+}
+
+.records-table td:nth-child(2) {
+  text-align: left;
+}
+
+.records-table tr.highlight td {
+  background: var(--highlight-bg);
+  color: var(--highlight-text);
+  font-weight: 700;
+}
+
+.records-empty {
+  color: var(--muted) !important;
+  font-style: italic;
+}
+
+.records-extra {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.records-extra span {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 11px;
+  color: var(--danger);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.overlay-box .hidden {
+  display: none;
 }

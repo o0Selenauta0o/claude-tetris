@@ -51,12 +51,28 @@
       </aside>
     </div>
 
-    <div id="overlay" class="overlay hidden">
+    <div id="overlay" class="overlay">
       <div class="overlay-box">
-        <p id="overlay-title">GAME OVER</p>
+        <p id="overlay-title">TETRIS</p>
         <p id="overlay-score"></p>
+        <p id="new-record" class="hidden">¡Nuevo récord!</p>
+        <form id="name-form" class="name-form hidden" autocomplete="off">
+          <input id="player-name" type="text" maxlength="12" placeholder="Tu nombre" aria-label="Nombre del jugador" />
+          <button id="save-btn" type="submit">Guardar</button>
+        </form>
+        <div id="records-panel" class="records-panel">
+          <span class="label">RECORDS</span>
+          <table class="records-table">
+            <thead>
+              <tr><th>#</th><th>Nombre</th><th>Puntuación</th><th>Líneas</th><th>Nivel</th></tr>
+            </thead>
+            <tbody id="records-list"></tbody>
+          </table>
+          <p class="records-extra">Mejor combo: <span id="best-combo">0</span> · Líneas máximas: <span id="max-lines">0</span></p>
+          <button id="reset-records-btn" class="link-btn" type="button">Borrar records</button>
+        </div>
         <button id="resume-btn" class="menu-btn pause-only">Reanudar</button>
-        <button id="restart-btn">Reiniciar</button>
+        <button id="restart-btn">Jugar</button>
         <button id="controls-btn" class="menu-btn secondary pause-only" aria-expanded="false" aria-controls="pause-controls">Ver controles</button>
         <ul id="pause-controls" class="pause-controls pause-only hidden">
           <li><kbd>←</kbd><kbd>→</kbd> mover</li>

@@ -44,6 +44,8 @@ Es una versión jugable del Tetris clásico con todas las mecánicas que esperar
 - **Menú de pausa** (`P` o `Escape`) con opciones para **Reanudar**, **Reiniciar** sin recargar la página, **Ver controles** y elegir el **Nivel inicial** (1–10) de la próxima partida (se recuerda en `localStorage`).
 - Mientras el menú está abierto se bloquean los controles del juego, y al reanudar se descartan las teclas que sigan mantenidas para evitar movimientos accidentales.
 - **Game Over** con opción de reinicio.
+- **Pantalla de inicio** con botón _Jugar_ y la tabla de records.
+- **Tabla de records local** (guardada en `localStorage`): top 5 puntuaciones con nombre del jugador, líneas y nivel. Al terminar la partida, si la puntuación entra en el top se pide el nombre y la fila se resalta en la tabla. También se guardan el **mejor combo** (piezas consecutivas que limpian líneas) y las **líneas máximas** conseguidas en una partida. Incluye un botón para **borrar los records**.
 
 ---
 
@@ -101,7 +103,7 @@ Define la estructura visual:
 
 - Un `<canvas id="board">` de **300 × 600** píxeles donde se renderiza el tablero.
 - Un panel lateral con `SCORE`, `LINES`, `LEVEL`, vista de la siguiente pieza y la lista de controles.
-- Un overlay para los estados **PAUSA** (con el menú: Reanudar, Reiniciar, Ver controles y selector de Nivel inicial) y **GAME OVER**.
+- Un overlay para la pantalla de inicio, el menú de **PAUSA** (Reanudar, Reiniciar, Ver controles y selector de Nivel inicial) y **GAME OVER**, con el formulario de nombre y la tabla de records.
 
 ### 2. `style.css`
 
@@ -120,10 +122,14 @@ Contiene toda la lógica del juego. A grandes rasgos:
 - **Puntuación**: usa la tabla clásica `[0, 100, 300, 500, 800]` multiplicada por el nivel actual; el hard drop suma 2 puntos por celda recorrida y el soft drop 1 punto por fila.
 - **Nivel y velocidad**: la partida empieza en el nivel inicial elegido en el menú de pausa (`startLevel`) y sube uno cada 10 líneas (`level = startLevel + floor(lines / 10)`); la velocidad de caída se calcula como `max(100, 1000 − (level − 1) × 90)` milisegundos.
 - **Ghost piece** (`ghostY`): proyecta la posición final de la pieza actual hacia abajo y la dibuja con `globalAlpha = 0.2`.
+- **Combos**: cada pieza que limpia al menos una línea incrementa el combo; una pieza que se fija sin limpiar lo reinicia a 0.
+- **Records** (`loadRecords` / `saveRecords`): se guardan en `localStorage` bajo la clave `tetris.records` como `{ entries: [{ name, score, lines, level, date }], bestCombo, maxLines }`. Los datos se validan al leerlos y cualquier error de `localStorage` se ignora sin romper el juego.
 
 ### Flujo del juego
 
 ```
+showStartScreen()                   → tablero vacío + overlay con records y botón "Jugar"
+        ↓ (clic en Jugar)
 init()
   ├─ createBoard()                  → matriz vacía
   ├─ next = randomPiece()
@@ -139,7 +145,7 @@ init()
    keydown → mover / rotar / soft-drop / hard-drop / pausa
 ```
 
-Cuando una pieza recién generada ya colisiona al aparecer (`spawn`), se dispara `endGame()` y se muestra el overlay de **Game Over**.
+Cuando una pieza recién generada ya colisiona al aparecer (`spawn`), se dispara `endGame()` y se muestra el overlay de **Game Over**: se actualizan el mejor combo y las líneas máximas, y si la puntuación entra en el top 5 se pide el nombre del jugador (Enter o _Guardar_; si se deja vacío se usa «Jugador»).
 
 ---
 
