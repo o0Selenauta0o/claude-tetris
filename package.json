@@ -1,0 +1,9 @@
+{
+  "name": "tetris",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Tetris en JavaScript vanilla con HTML5 Canvas",
+  "scripts": {
+    "dev": "python -m http.server 8000 --bind 127.0.0.1"
+  }
+}
